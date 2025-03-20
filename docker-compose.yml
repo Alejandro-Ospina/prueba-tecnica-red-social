@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: type-here-username
+      POSTGRES_PASSWORD: type-here-pass-db
+      POSTGRES_DB: type-here-db-name
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U your_username -h postgres -d your_dbname" ]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+
+  servicio-usuarios:
+    build:
+      context: ./servicio-usuarios
+      dockerfile: Dockerfile
+    container_name: servicio-usuarios
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: type-here-postgre-data-base-url
+      SPRING_DATASOURCE_USERNAME: type-here-user-name
+      SPRING_DATASOURCE_PASSWORD: type-here-pass-db
+      TOKEN_SIGNATURE: set-here-signature-pass-minumun-64-characters
+    ports:
+      - "8081:8081"
+
+  servicio-publicaciones:
+    build:
+      context: ./servicio-publicaciones
+      dockerfile: Dockerfile
+    container_name: servicio-publicaciones
+    depends_on:
+      postgres:
+        condition: service_healthy
+      servicio-usuarios:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: type-here-postgre-data-base-url
+      SPRING_DATASOURCE_USERNAME: type-here-user-name
+      SPRING_DATASOURCE_PASSWORD: type-here-pass-db
+      TOKEN_SIGNATURE: set-here-signature-pass-minumun-64-characters
+    ports:
+      - "8082:8082"
+
+volumes:
+  postgres_data:

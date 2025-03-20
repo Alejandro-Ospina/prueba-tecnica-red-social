@@ -1,0 +1,12 @@
+CREATE TABLE users
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(100) NOT NULL UNIQUE,
+    birthdate TIME NOT NULL,
+    age INT NOT NULL,
+    country VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    pass VARCHAR(100) NOT NULL,
+    active BOOLEAN DEFAULT TRUE
+);
