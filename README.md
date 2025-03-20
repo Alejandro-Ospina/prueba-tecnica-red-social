@@ -45,6 +45,8 @@ sudo docker compose up --build -d
   http://localhost:8081/servicio-usuarios.html
   http://localhost:8082/servicio-publicaciones.html
   ```
+* Se comparte en el adjunto del correo un archivo json llamado ```redsocial.postman_collection.json``` para exportar en postman y poner a prueba todos los endpoints de cada microservicio.
+* Todos los usuarios tienen contraseña ```12345```, para facilitar el logeo y depuración de pruebas. Consultar el archivo ```init.sql``` que contiene la información de usuarios de prueba y publicaciones.
 
 ## Conclusiones
 Agradezco por el tiempo y la consideración. Pese al tiempo ajustado, desarrollé un backend robusto que cumple con los requerimientos de la prueba técnica. Sin embargo, pido disculpas porque no pude añadir la capa de front. 
